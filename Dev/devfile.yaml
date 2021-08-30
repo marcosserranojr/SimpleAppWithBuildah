@@ -1,0 +1,16 @@
+apiVersion: 1.0.0
+metadata:
+  name: StudentDemoSpringBootJPA2
+projects:
+  - name: StudentDemo
+    source:
+      location: 'https://github.com/marcosserranojr/SimpleAppWithBUILDAH.git'
+      type: git
+components:
+  - id: redhat/java/latest
+    type: chePlugin
+  - memoryLimit: 512Mi
+    type: dockerimage
+    alias: Buildah
+    image: 'quay.io/containers/buildah:latest'   
+           
