@@ -1,15 +1,21 @@
 apiVersion: 1.0.0
 metadata:
-  name: StudentDemoSpringBootJPA2
+  name: DotNetAppWithBuildah
 projects:
-  - name: StudentDemo
+  - name: AppWithBuildah
     source:
       location: 'https://github.com/marcosserranojr/SimpleAppWithBuildah.git'
       type: git
 components:
   - id: redhat/java/latest
     type: chePlugin
+  - mountSources: true
+    memoryLimit: 512Mi
+    type: dockerimage
+    alias: maven
+    image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:f90e09397caa4dd5cd3476e495adfc0096272c0ba746a6e32215175c541ae058'    
   - memoryLimit: 512Mi
+    mountSources: true
     type: dockerimage
     alias: buildah
     image: 'quay.io/containers/buildah:latest'   
