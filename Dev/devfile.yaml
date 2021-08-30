@@ -4,13 +4,13 @@ metadata:
 projects:
   - name: StudentDemo
     source:
-      location: 'https://github.com/marcosserranojr/SimpleAppWithBUILDAH.git'
+      location: 'https://github.com/marcosserranojr/SimpleAppWithBuildah.git'
       type: git
 components:
   - id: redhat/java/latest
     type: chePlugin
   - memoryLimit: 512Mi
     type: dockerimage
-    alias: Buildah
+    alias: buildah
     image: 'quay.io/containers/buildah:latest'   
            
