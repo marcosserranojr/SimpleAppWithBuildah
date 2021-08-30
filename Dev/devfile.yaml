@@ -1,22 +1,91 @@
 apiVersion: 1.0.0
 metadata:
-  name: DotNetAppWithBuildah
+  name: dotnet-vpqgq
 projects:
-  - name: AppWithBuildah
+  - name: dotnet-web-simple
     source:
-      location: 'https://github.com/marcosserranojr/SimpleAppWithBuildah.git'
-      type: git
+      location: 'https://codeready-codeready-workspaces-operator.apps.sandbox-m2.ll9k.p1.openshiftapps.com/devfile-registry/resources/dotnet-dotnet-web-simple-netcoreapp3.1.zip'
+      type: zip
 components:
-  - id: redhat/java/latest
+  - id: redhat-developer/che-omnisharp-plugin/latest
     type: chePlugin
+    alias: omnisharp
+  - id: redhat-developer/netcoredbg-theia-plugin/latest
+    type: chePlugin
+    alias: netcoredbg
   - mountSources: true
+    endpoints:
+      - name: hello-endpoint
+        port: 5000
     memoryLimit: 512Mi
     type: dockerimage
-    alias: maven
-    image: 'registry.redhat.io/codeready-workspaces/plugin-java11-rhel8@sha256:f90e09397caa4dd5cd3476e495adfc0096272c0ba746a6e32215175c541ae058'    
+    volumes:
+      - name: nuget
+        containerPath: /home/jboss/.nuget
+    alias: dotnet
+    image: 'registry.redhat.io/codeready-workspaces/stacks-dotnet-rhel8@sha256:581d3da4bf1fe4467d688cd4390e958dc15f07b530845298c3fbcb18bfdc033a'
+  - id: redhat/vscode-xml/latest
+    type: chePlugin
   - memoryLimit: 512Mi
     mountSources: true
     type: dockerimage
     alias: buildah
-    image: 'quay.io/containers/buildah:latest'   
+    image: 'quay.io/containers/buildah:latest'     
+commands:
+  - name: 1. Update dependencies
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/dotnet-web-simple'
+        type: exec
+        command: dotnet restore
+        component: dotnet
+  - name: 2. Build
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/dotnet-web-simple'
+        type: exec
+        command: dotnet build
+        component: dotnet
+  - name: 3. Run
+    actions:
+      - workdir: '${CHE_PROJECTS_ROOT}/dotnet-web-simple'
+        type: exec
+        command: dotnet run
+        component: dotnet
+  - name: Launch .net web application in debug mode
+    actions:
+      - referenceContent: |
+          {
+            "version": "0.2.0",
+              "configurations": [
+                 {
+                    "type": "netcoredbg",
+                    "request": "launch",
+                    "program": "/projects/dotnet-web-simple/bin/Debug/netcoreapp3.1/web.dll",
+                    "args": [],
+                    "name": ".NET Core Launch (console)",
+                    "stopAtEntry": true,
+                    "preLaunchTask": "2. Build",
+                    "console": "internalConsole"
+                  }
+              ]
+          }
+        type: vscode-launch
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
            
