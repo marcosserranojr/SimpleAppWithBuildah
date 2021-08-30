@@ -4,7 +4,7 @@ metadata:
 projects:
   - name: dotnet-web-simple
     source:
-      location: 'https://codeready-codeready-workspaces-operator.apps.sandbox-m2.ll9k.p1.openshiftapps.com/devfile-registry/resources/dotnet-dotnet-web-simple-netcoreapp3.1.zip'
+      location: 'https://github.com/marcosserranojr/SimpleAppWithBuildah.git'
       type: zip
 components:
   - id: redhat-developer/che-omnisharp-plugin/latest
@@ -26,11 +26,7 @@ components:
     image: 'registry.redhat.io/codeready-workspaces/stacks-dotnet-rhel8@sha256:581d3da4bf1fe4467d688cd4390e958dc15f07b530845298c3fbcb18bfdc033a'
   - id: redhat/vscode-xml/latest
     type: chePlugin
-  - memoryLimit: 512Mi
-    mountSources: true
-    type: dockerimage
-    alias: buildah
-    image: 'quay.io/containers/buildah:latest'     
+    
 commands:
   - name: 1. Update dependencies
     actions:
